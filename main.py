@@ -3,6 +3,7 @@
 # throughout this file
 import pygame
 from constants import *
+from player import Player
 
 def main():
     # initialize pygame
@@ -11,7 +12,6 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
 
-
     print("Starting Asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
@@ -19,22 +19,46 @@ def main():
     # use pygame's display.set_mode() to get a new GUI window:
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
+    # create groups
+    updatables = pygame.sprite.Group()
+    drawables = pygame.sprite.Group()
+
+    # set player group containers
+    Player.containers = (updatables, drawables)
+    player = Player((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))
+    
+
+    # main game loop
     game_running = True
     while game_running:
+        # It will pause the game loop until 1/60th of a 
+        # second has passed
+        dt = (clock.tick(60) / 1000)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                game_running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    game_running = False
 
-            # --- Fill the screen with black ---
-            screen.fill((0, 0, 0))
+        # --- Fill the screen with black ---
+        screen.fill((0, 0, 0))
 
-            # --- Update the display ---
-            pygame.display.flip()
+        #player.update(dt)
+        #player.draw(screen)
 
-            # It will pause the game loop until 1/60th of a 
-            # second has passed
-            clock.tick(60)
-            dt = (clock.get_time() / 1000)
+        # --- Update and Draw items on screen ---
+        updatables.update(dt)
+        for x in drawables:
+            x.draw(screen)        
+
+        # --- Update the display ---
+        pygame.display.flip()
+
+
+
+    pygame.quit()
             
 
 
