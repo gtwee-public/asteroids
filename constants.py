@@ -8,8 +8,13 @@ ASTEROID_MAX_RADIUS = ASTEROID_MIN_RADIUS * ASTEROID_KINDS # asteroid max size
 
 PLAYER_RADIUS = 20 # size of the player hitbox
 PLAYER_TURN_SPEED = 300 # player rotation speed
-PLAYER_SPEED = 200 # player movement speed
+PLAYER_ACCELERATION = 300 # player acceleration rate
+PLAYER_MAX_SPEED = 400 # player max movement speed
+PLAYER_FRICTION = 0.99 # friction of the player
 PLAYER_SHOT_SPEED = 500 # the speed of shots made by the player
 
 SHOT_RADIUS = 5 # size of shot
 SHOT_COOLDOWN = 0.3 # seconds between shots
+
+STAR_SIZE = 1 # star radius size
+STAR_SPAWN_RATE = 0.6  # seconds between star spawning

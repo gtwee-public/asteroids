@@ -43,8 +43,14 @@ class Asteroid(CircleShape):
         asteroid1.velocity = velocity1 * speed
         asteroid2.velocity = velocity2 * speed
 
-
-
+    def is_off_screen(self):
+        """Return True if the shot is outside the screen bounds."""
+        return (
+            self.position.x < 0 or
+            self.position.x > SCREEN_WIDTH or
+            self.position.y < 0 or
+            self.position.y > SCREEN_HEIGHT
+        )
 
 
 

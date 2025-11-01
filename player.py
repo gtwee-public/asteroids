@@ -25,25 +25,24 @@ class Player(CircleShape):
 
     def update(self, dt):
         keys = pygame.key.get_pressed()
+        # shot cooldown timer
         self.time_since_last_shot += dt
 
-        if keys[pygame.K_a]:
+        # movement logic
+        if keys[pygame.K_a]: # rotate right
             self.rotate(dt, direction=-1)
-
-        if keys[pygame.K_d]:
+        if keys[pygame.K_d]: # rotate left
             self.rotate(dt, direction=1)
-
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w]: # move forward
             self.move(dt, direction=1)
-
-        if keys[pygame.K_s]:
+        if keys[pygame.K_s]: # move backwards
             self.move(dt, direction=-1)
-
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_SPACE]: # shoot shot
             self.shoot(dt)
-
-        for shot in self.shots:
-            shot.update(dt)
+        # --- Apply velocity to position ---
+        self.position += self.velocity * dt
+        # --- Apply friction to slow down gradually ---
+        self.velocity *= 0.99  # tweak this for more/less drift
 
         # --- Update and remove off-screen shots ---
         for shot in self.shots[:]:  # iterate over a copy to safely remove
@@ -56,7 +55,10 @@ class Player(CircleShape):
 
     def move(self, dt, direction):
         forward = (pygame.Vector2(0, 1).rotate(self.rotation) * direction)
-        self.position += forward * PLAYER_SPEED * dt
+        self.velocity += forward * PLAYER_ACCELERATION * dt
+        
+        if self.velocity.length() > PLAYER_MAX_SPEED:
+            self.velocity.scale_to_length(PLAYER_MAX_SPEED)
 
     def shoot(self, dt):
         if self.time_since_last_shot >= SHOT_COOLDOWN:
