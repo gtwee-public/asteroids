@@ -3,8 +3,8 @@ import random
 from asteroid import Asteroid
 from constants import *
 
-
 class AsteroidField(pygame.sprite.Sprite):
+
     edges = [
         [
             pygame.Vector2(1, 0),
@@ -38,6 +38,8 @@ class AsteroidField(pygame.sprite.Sprite):
 
     def update(self, dt):
         self.spawn_timer += dt
+
+        # Count how many asteroids currently exist
         if self.spawn_timer > ASTEROID_SPAWN_RATE:
             self.spawn_timer = 0
 

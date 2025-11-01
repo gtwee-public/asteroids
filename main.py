@@ -41,7 +41,10 @@ def main():
     # spawn player
     player = Player((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))
     
+    # spawn asteroids
     asteroid_field = AsteroidField()
+
+    #spawn stars
     star_field = StarField()
 
     # main game loop

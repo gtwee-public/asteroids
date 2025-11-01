@@ -22,7 +22,6 @@ class Player(CircleShape):
     def draw(self, screen):
         pygame.draw.polygon(screen, (255, 255, 255), self.triangle(), 2)
 
-
     def update(self, dt):
         keys = pygame.key.get_pressed()
         # shot cooldown timer
@@ -43,6 +42,27 @@ class Player(CircleShape):
         self.position += self.velocity * dt
         # --- Apply friction to slow down gradually ---
         self.velocity *= 0.99  # tweak this for more/less drift
+
+        # --- Keep player within screen bounds ---
+        min_x = SCREEN_GAP
+        max_x = SCREEN_WIDTH - SCREEN_GAP
+        min_y = SCREEN_GAP
+        max_y = SCREEN_HEIGHT - SCREEN_GAP
+
+        # --- Soft collision with screen boundaries ---
+        if self.position.x < min_x:
+            self.position.x = min_x  # snap back inside bounds
+            self.velocity.x = abs(self.velocity.x) * 0.5  # bounce right
+        elif self.position.x > max_x:
+            self.position.x = max_x
+            self.velocity.x = -abs(self.velocity.x) * 0.5  # bounce left
+
+        if self.position.y < min_y:
+            self.position.y = min_y
+            self.velocity.y = abs(self.velocity.y) * 0.5  # bounce down
+        elif self.position.y > max_y:
+            self.position.y = max_y
+            self.velocity.y = -abs(self.velocity.y) * 0.5  # bounce up
 
         # --- Update and remove off-screen shots ---
         for shot in self.shots[:]:  # iterate over a copy to safely remove
@@ -67,4 +87,5 @@ class Player(CircleShape):
             shot = Shot(self.position.x, self.position.y, SHOT_RADIUS, velocity)
             self.shots.append(shot)
             self.time_since_last_shot = 0
+
 
