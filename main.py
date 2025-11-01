@@ -71,12 +71,12 @@ def main():
         for a in asteroids:
             if a.collision_detection(player):
                 print("Game over!")
-                pygame.quit()
+                game_running = False
 
             for b in shots:
                 if a.collision_detection(b):
                     b.kill()
-                    a.kill()
+                    a.split()
                     
         
 
